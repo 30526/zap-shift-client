@@ -20,6 +20,7 @@ body {
   font-style: normal;
 }
 
+
 .btn-primary {
   @apply bg-[#03373d] text-[#bee44b] border-0 shadow-none rounded-full font-bold px-8;
 }

@@ -3,7 +3,7 @@ import Logo from "../../../components/Logo/Logo";
 
 const Footer = () => {
   return (
-    <footer className="footer footer-horizontal footer-center bg-black text-white p-10">
+    <footer className="footer footer-horizontal footer-center bg-black text-white p-10 rounded-3xl">
       <aside>
         <Logo />
         <p className="font-bold">
