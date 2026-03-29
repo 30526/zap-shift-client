@@ -13,19 +13,19 @@ const HowItWorks = () => {
       id: 2,
       title: "Cash On Delivery",
       description:
-        "From personal packages to business shipments, we deliver on time, every time.",
+        "Pay for your shipment when it arrives, with our flexible cash on delivery option.",
     },
     {
       id: 3,
       title: "Delivery Hubs",
       description:
-        "From personal packages to business shipments, we deliver on time, every time.",
+        "Our strategically located hubs ensure your packages are always within reach, ready for swift delivery.",
     },
     {
       id: 4,
       title: "Booking SME & Corporate",
       description:
-        "From personal packages to business shipments, we deliver on time, every time.",
+        "Specialized solutions for small and medium enterprises, as well as corporate clients.",
     },
   ];
   return (
@@ -33,7 +33,7 @@ const HowItWorks = () => {
       <h2 className="text-secondary font-bold text-3xl">How It Works</h2>
       <div className="my-6 flex flex-col md:flex-row gap-4">
         {cardInfo.map((card) => (
-          <HowWorksCard key={card.id} />
+          <HowWorksCard key={card.id} card={card} />
         ))}
       </div>
     </div>
