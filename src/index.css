@@ -12,6 +12,7 @@
   --color-accent: #606060;
   --color-dark: #1f1f1f;
   --color-black: #0b0b0b;
+  --color-base-content: #b8b7b7;
 }
 
 body {
@@ -19,7 +20,6 @@ body {
   font-optical-sizing: auto;
   font-style: normal;
 }
-
 
 .btn-primary {
   @apply bg-[#03373d] text-[#bee44b] border-0 shadow-none rounded-full font-bold px-8;
@@ -30,8 +30,8 @@ body {
 }
 
 .btn-secondary {
-  @apply btn-outline bg-transparent border-[#b4b4b4] text-[#1f1f1f] rounded-xl font-bold px-6
+  @apply btn-outline bg-transparent border-[#b4b4b4] text-[#1f1f1f] rounded-xl font-bold px-6;
 }
 .btn-secondary:hover {
-  @apply border-[#03373d] text-[#03373d] shadow-none  transition-all duration-300 ease-in-out; ;
+  @apply border-[#03373d] text-[#03373d] shadow-none  transition-all duration-300 ease-in-out;
 }
