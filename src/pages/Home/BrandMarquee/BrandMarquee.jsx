@@ -12,14 +12,14 @@ export const BrandMarquee = () => {
     console.log('Marquee:', Marquee)
   return (
     <div className='my-20'>
-        <h3 className='text-center text-secondary font-bold text-3xl'>We've helped thousands of sales teams</h3>
-      <Marquee speed={100} autofill={true} className='my-10'>
-        <div className='flex gap-30 justify-items-center items-center'>
-            <img src={brand1} alt="Brand 1" />
+        <h3 className='text-center text-secondary font-bold text-3xl'>We've helped thousands of sales teams</h3>
+      <Marquee speed={100} className='my-20'>
+        <div className='flex gap-4 md:gap-30 justify-items-center items-center'>
         <img src={brand2} alt="Brand 2" />
-        <img src={brand3} alt="Brand 3" />
+        <img src={brand1} alt="Brand 1" />
         <img src={brand4} alt="Brand 4" />
         <img src={brand5} alt="Brand 5" />
+        <img src={brand3} alt="Brand 3" />
         </div>
       </Marquee>
     </div>
