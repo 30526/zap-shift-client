@@ -6,6 +6,7 @@ import { BrandMarquee } from "../BrandMarquee/BrandMarquee";
 import { SupportSection } from "../SupportSection/SupportSection";
 import WhyChooseUs from "../WhyChooseUs/WhyChooseUs";
 import Testimonials from "../Testimonials/Testimonials";
+import FAQ from "../FAQ/FAQ";
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
         <SupportSection></SupportSection>
         <WhyChooseUs></WhyChooseUs>
         <Testimonials></Testimonials>
+        <FAQ></FAQ>
       </section>
     </div>
   );
