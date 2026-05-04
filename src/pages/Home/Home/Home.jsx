@@ -4,6 +4,7 @@ import HowItWorks from "../HowItWorks/HowItWorks";
 import Services from "../Services/Services";
 import { BrandMarquee } from "../BrandMarquee/BrandMarquee";
 import { SupportSection } from "../SupportSection/SupportSection";
+import WhyChooseUs from "../WhyChooseUs/WhyChooseUs";
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
         <Services></Services>
         <BrandMarquee></BrandMarquee>
         <SupportSection></SupportSection>
+        <WhyChooseUs></WhyChooseUs>
       </section>
     </div>
   );

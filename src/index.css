@@ -22,7 +22,7 @@ body {
 }
 
 .btn-primary {
-  @apply bg-[#03373d] text-[#bee44b] border-0 shadow-none rounded-full font-bold px-8;
+  @apply bg-[#03373d] text-[#bee44b] border-1 border-[#bee44b] shadow-none rounded-full font-bold px-8;
 }
 
 .btn-primary:hover {
