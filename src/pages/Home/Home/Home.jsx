@@ -5,6 +5,7 @@ import Services from "../Services/Services";
 import { BrandMarquee } from "../BrandMarquee/BrandMarquee";
 import { SupportSection } from "../SupportSection/SupportSection";
 import WhyChooseUs from "../WhyChooseUs/WhyChooseUs";
+import Testimonials from "../Testimonials/Testimonials";
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
         <BrandMarquee></BrandMarquee>
         <SupportSection></SupportSection>
         <WhyChooseUs></WhyChooseUs>
+        <Testimonials></Testimonials>
       </section>
     </div>
   );
