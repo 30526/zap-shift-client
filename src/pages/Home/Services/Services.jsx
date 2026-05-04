@@ -3,7 +3,7 @@ import ServiceCard from "../../../components/Cards/ServiceCard/ServiceCard";
 
 const Services = () => {
   return (
-    <div className="bg-secondary p-20 rounded-3xl my-20">
+    <div className="bg-secondary px-4 py-10 md:p-20 rounded-3xl my-20">
       <h3 className="text-3xl font-bold text-white text-center">
         Our Services
       </h3>

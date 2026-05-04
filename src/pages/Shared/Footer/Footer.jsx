@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="footer footer-horizontal footer-center bg-black text-white p-10 rounded-3xl">
       <aside>
-        <Logo />
+        <Logo color="white" />
         <p className="font-bold">
           ACME Industries Ltd.
           <br />
