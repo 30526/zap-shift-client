@@ -27,9 +27,9 @@ export const SupportSection = () => {
         <div className='grid grid-cols-1 gap-5'>
             {supportInfo.map((item) => (
                 <div  key={item.id} className='group bg-[#f5f5f5]  rounded-lg overflow-hidden'>
-                <div  className='flex items-center gap-5 p-8'>
+                <div  className='flex  flex-col md:flex-row items-center gap-5 p-8'>
                     <img src={item.image} alt={item.title} className='w-36 object-contain mb-4' />
-                    <div className='border border-dashed border-secondary h-32'></div>
+                    <div className='border border-dashed border-secondary md:h-32 w-60 md:w-0'></div>
                     <div className=''>
                         <h3 className='text-secondary text-xl font-bold mb-2'>{item.title}</h3>
                         <p className='text-accent'>{item.description}</p>
