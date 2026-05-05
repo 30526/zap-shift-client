@@ -9,7 +9,6 @@ import brand5 from '../../../assets/brands/star.png'
 const Marquee = MarqueeModule.default
 
 export const BrandMarquee = () => {
-    console.log('Marquee:', Marquee)
   return (
     <div className='my-20'>
         <h3 className='text-center text-secondary font-bold text-3xl'>We've helped thousands of sales teams</h3>

@@ -5,6 +5,7 @@ import bannerImg01 from "../../../assets/banner/banner1.png";
 import bannerImg02 from "../../../assets/banner/banner2.png";
 import bannerImg03 from "../../../assets/banner/banner3.png";
 import { FiArrowUpRight } from "react-icons/fi";
+import { BiLeftArrow } from "react-icons/bi";
 
 const Banner = () => {
   const buttons = (
@@ -13,11 +14,19 @@ const Banner = () => {
       <button className="btn bg-black rounded-full px-2.5 animate-bounce hover:animate-none">
         <FiArrowUpRight size={20} className="text-primary" />
       </button>
-      <button className="btn btn-secondary ml-4">Be A Rider</button>
+      <button className="btn btn-secondary ml-2">Be A Rider</button>
     </div>
   );
   return (
-    <Carousel autoPlay infiniteLoop showThumbs={false} showStatus={false}>
+    <Carousel
+      autoPlay={true}
+      infiniteLoop={true}
+      interval={3000}
+      showIndicators={false}
+      showArrows={false}
+      showThumbs={false}
+      showStatus={false}
+    >
       <div className="relative">
         <img src={bannerImg01} className="w-full h-full object-cover" />
         {buttons}
