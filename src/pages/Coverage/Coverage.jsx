@@ -1,36 +1,55 @@
-import React from "react";
+import React, { useRef } from "react";
 import { FiSearch } from "react-icons/fi";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useLoaderData } from "react-router";
+import toast from "react-hot-toast";
 
 const Coverage = () => {
   const position = [23.8103, 90.4125];
   const serviceCenters = useLoaderData();
+  const mapRef = useRef(null);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const location = e.target.location.value;
+    const district = serviceCenters.find((center) =>
+      center.district.toLowerCase().includes(location.toLowerCase()),
+    );
+    if (district) {
+      const coord = [district.latitude, district.longitude];
+      mapRef.current.flyTo(coord, 14);
+    } else {
+      toast.error("District not found in our service centers.");
+    }
+  };
   return (
     <div className="min-h-screen px-4 md:px-20 py-4 bg-gray-50 my-10 rounded-2xl">
       <h3 className="text-4xl font-bold text-secondary my-10">
         We are available in 64 districts
       </h3>
-      <div className="relative flex items-center w-full max-w-xs sm:max-w-md group">
-        {/* Search Icon */}
-        <FiSearch className="absolute left-4 text-accent text-base sm:text-lg pointer-events-none group-focus-within:text-secondary transition-colors" />
+      <form onSubmit={handleSearch}>
+        <div className="relative flex items-center w-full max-w-xs sm:max-w-md group">
+          {/* Search Icon */}
+          <FiSearch className="absolute left-4 text-accent text-base sm:text-lg pointer-events-none group-focus-within:text-secondary transition-colors" />
 
-        {/* Input Field */}
-        <input
-          type="search"
-          className="w-full py-2.5 sm:py-3 pl-10 sm:pl-12 pr-24 sm:pr-28 text-[10px] sm:text-xs font-medium bg-white border-none rounded-full shadow-sm focus:ring-2 focus:ring-primary/20 outline-none text-dark placeholder:text-accent"
-          placeholder="Search your district"
-        />
+          {/* Input Field */}
+          <input
+            type="search"
+            className="w-full py-2.5 sm:py-3 pl-10 sm:pl-12 pr-24 sm:pr-28 text-[10px] sm:text-xs font-medium bg-white border-none rounded-full shadow-sm focus:ring-2 focus:ring-primary/20 outline-none text-dark placeholder:text-accent"
+            placeholder="Search your district"
+            name="location"
+          />
 
-        {/* Search Button */}
-        <button
-          type="submit"
-          className="absolute right-1 top-1 bottom-1 px-4 sm:px-6 text-[10px] sm:text-xs font-bold transition-all rounded-full bg-primary text-secondary hover:brightness-105 active:scale-95"
-        >
-          Search
-        </button>
-      </div>
+          {/* Search Button */}
+          <button
+            type="submit"
+            className="absolute right-1 top-1 bottom-1 px-4 sm:px-6 text-[10px] sm:text-xs font-bold transition-all rounded-full bg-primary text-secondary hover:brightness-105 active:scale-95"
+          >
+            Search
+          </button>
+        </div>
+      </form>
       <div className="w-full bg-gray-200 h-[4px] rounded-full my-10"></div>
       <h3 className="text-2xl font-bold text-secondary">
         We deliver almost all over Bangladesh
@@ -41,6 +60,7 @@ const Coverage = () => {
           zoom={7}
           scrollWheelZoom={false}
           className="h-full w-full rounded-2xl"
+          ref={mapRef}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
