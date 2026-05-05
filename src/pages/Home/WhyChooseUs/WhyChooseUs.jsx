@@ -4,7 +4,7 @@ import merchantBG from '../../../assets/be-a-merchant-bg.png'
 
 const WhyChooseUs = () => {
   return (
-    <div className='my-20 bg-secondary px-12 py-8 relative rounded-4xl flex items-center justify-between'>
+    <div className='my-20 bg-secondary px-12 py-8 relative rounded-4xl flex items-center justify-between overflow-hidden'>
         <img src={merchantBG} className='absolute top-0' alt="Be a Merchant Background" />
 <div className='flex flex-col gap-6 flex-1'>
     <h3 className='text-white text-3xl md:text-4xl font-bold'>Merchant and Customer Satisfaction<br className='hidden md:block'></br> is Our First Priority</h3>

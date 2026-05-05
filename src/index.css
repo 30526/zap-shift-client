@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
-@plugin "daisyui" {
-  themes: light --default;
+
+/* This is how you load daisyUI in Tailwind v4 */
+@plugin "daisyui/index.js" {
+  themes: light --default, dark;
 }
 
 @plugin "daisyui/theme" {
@@ -15,6 +17,15 @@
   --color-base-content: #b8b7b7;
 }
 
+/* Custom Components using @apply */
+@layer components {
+  .btn-primary {
+    /* Note: 'border' works in v4, 'border-1' is not a default class */
+    @apply bg-[var(--color-secondary)] text-[var(--color-primary)] border border-[var(--color-primary)] shadow-none rounded-full font-bold px-8;
+  }
+}
+
+ 
 body {
   font-family: "Urbanist", sans-serif;
   font-optical-sizing: auto;
@@ -22,7 +33,7 @@ body {
 }
 
 .btn-primary {
-  @apply bg-[#03373d] text-[#bee44b] border-1 border-[#bee44b] shadow-none rounded-full font-bold px-8;
+  @apply bg-[#03373d] text-[#bee44b] border-[#bee44b] shadow-none rounded-full font-bold px-8;
 }
 
 .btn-primary:hover {
