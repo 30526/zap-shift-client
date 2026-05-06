@@ -1,6 +1,9 @@
-import { FcGoogle } from "react-icons/fc";
 import { FaUserPlus } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
+import { Link } from "react-router";
+import SocialLogin from "../../../components/SocialLogin/SocialLogin";
 
 const Register = () => {
   const {
@@ -8,8 +11,19 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const { registerUser } = useAuth();
+
   const handleRegistration = (data) => {
     console.log(data);
+    registerUser(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+        toast.success("Registration successful!");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   return (
@@ -111,17 +125,16 @@ const Register = () => {
         <div className="text-center mt-4">
           <p className="text-sm text-gray-500">
             Already have an account?{" "}
-            <span className="text-primary font-medium cursor-pointer">
-              Login
-            </span>
+            <Link to="/login">
+              <span className="text-primary underline font-bold cursor-pointer hover:underline">
+                Login
+              </span>
+            </Link>
           </p>
           <div className="divider text-gray-400 text-xs my-4">Or</div>
 
           {/* Google Register */}
-          <button className="btn w-full bg-gray-100 hover:bg-gray-200 border-none text-black font-semibold rounded-lg h-10 min-h-[40px] flex items-center justify-center gap-2 normal-case">
-            <FcGoogle className="text-lg" />
-            Register with google
-          </button>
+          <SocialLogin />
         </div>
       </div>
     </div>

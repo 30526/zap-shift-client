@@ -1,8 +1,23 @@
 import React from "react";
 import Logo from "../../../components/Logo/Logo";
 import { NavLink } from "react-router";
+import { FiArrowUpRight } from "react-icons/fi";
+import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        toast.success("Logged out successfully");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
   const links = (
     <>
       <li>
@@ -59,7 +74,26 @@ const Navbar = () => {
         <ul className="menu menu-horizontal text-accent px-1">{links}</ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        {user ? (
+          <button
+            onClick={handleLogout}
+            className="btn btn-outline border-secondary/20 text-secondary/80 font-semibold rounded-lg transition-all active:scale-[0.95] px-8 hover:bg-red-200"
+          >
+            Log Out
+          </button>
+        ) : (
+          <NavLink to="/login">
+            <button className="btn btn-outline border-secondary/20 text-secondary/80 font-semibold rounded-lg transition-all active:scale-[0.95] px-8">
+              Sign In
+            </button>
+          </NavLink>
+        )}
+        <button className="btn bg-primary text-secondary font-semibold rounded-lg ml-2 transition-all active:scale-[0.95] px-8">
+          Be a Rider
+        </button>
+        <button className="btn bg-black rounded-full px-2.5 animate-bounce hover:animate-none">
+          <FiArrowUpRight size={20} className="text-primary" />
+        </button>
       </div>
     </div>
   );
