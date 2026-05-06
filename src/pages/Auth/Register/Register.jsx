@@ -87,6 +87,8 @@ const Register = () => {
             <input
               type="password"
               placeholder="Password"
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
               className="input input-bordered text-accent w-full h-10 rounded-lg bg-white border-gray-200 focus:border-primary focus:outline-none placeholder:text-gray-300 text-sm"
               {...register("password", { required: true, minLength: 6 })}
             />
