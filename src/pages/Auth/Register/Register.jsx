@@ -69,6 +69,41 @@ const Register = () => {
             />
           </div>
 
+          {/* photo  */}
+          <div className="form-control">
+            <label className="label py-1">
+              <span className="label-text font-bold text-secondary text-xs">
+                Photo
+              </span>
+            </label>
+            <input
+              type="file"
+              placeholder="Your photo"
+              className="file-input input-bordered text-accent w-full h-10 rounded-lg bg-white border-gray-200 focus:border-primary focus:outline-none placeholder:text-gray-300 text-sm"
+              {...register("photo", {
+                required: true,
+                validate: {
+                  lessThan1MB: (files) =>
+                    files[0]?.size <= 1048576 ||
+                    "Image size must be less than 1 MB",
+                  acceptedFormats: (files) =>
+                    ["image/jpeg", "image/png", "image/webp"].includes(
+                      files[0]?.type,
+                    )
+                },
+              })}
+            />
+            {errors.photo?.type === "required" && (
+              <p className="text-red-500 text-xs">Photo is required</p>
+            )}
+            {errors.photo?.type === "lessThan1MB" && (
+              <p className="text-red-500 text-xs">{errors.photo.message}</p>
+            )}
+            {errors.photo?.type === "acceptedFormats" && (
+              <p className="text-red-500 text-xs">{errors.photo.message}</p>
+            )}
+          </div>
+
           <div className="form-control">
             <label className="label py-1">
               <span className="label-text font-bold text-secondary text-xs">
