@@ -2,7 +2,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../../../components/SocialLogin/SocialLogin";
 import axios from "axios";
 
@@ -14,6 +14,8 @@ const Register = () => {
   } = useForm();
 
   const { registerUser, updateUserProfile } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleRegistration = (data) => {
     const profileImg = data.photo[0];
@@ -34,7 +36,9 @@ const Register = () => {
             photoURL: res.data.data.url,
           };
           updateUserProfile(userProfile)
-            .then()
+            .then(() => {
+              navigate(location?.state || "/");
+            })
             .catch((error) => {
               toast.error(error.message);
             });
@@ -179,7 +183,7 @@ const Register = () => {
         <div className="text-center mt-4">
           <p className="text-sm text-gray-500">
             Already have an account?{" "}
-            <Link to="/login">
+            <Link to="/login" state={location?.state}>
               <span className="text-primary underline font-bold cursor-pointer hover:underline">
                 Login
               </span>

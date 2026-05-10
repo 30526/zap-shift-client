@@ -88,9 +88,11 @@ const Navbar = () => {
             </button>
           </NavLink>
         )}
-        <button className="btn bg-primary text-secondary font-semibold rounded-lg ml-2 transition-all active:scale-[0.95] px-8">
-          Be a Rider
-        </button>
+        <NavLink to="/rider">
+          <button className="btn bg-primary text-secondary font-semibold rounded-lg ml-2 transition-all active:scale-[0.95] px-8">
+            Be a Rider
+          </button>
+        </NavLink>
         <button className="btn bg-black rounded-full px-2.5 animate-bounce hover:animate-none">
           <FiArrowUpRight size={20} className="text-primary" />
         </button>

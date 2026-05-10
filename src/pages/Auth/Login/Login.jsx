@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { FiLock, FiMail } from "react-icons/fi";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
 import SocialLogin from "../../../components/SocialLogin/SocialLogin";
@@ -8,12 +8,14 @@ import SocialLogin from "../../../components/SocialLogin/SocialLogin";
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const { signInUser } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   const handleLogin = (data) => {
     console.log(data);
     signInUser(data.email, data.password)
-      .then((result) => {
-        console.log(result.user);
+      .then(() => {
         toast.success("Login successful!");
+        navigate(location?.state || "/");
       })
       .catch((error) => {
         toast.error(error.message);
@@ -83,7 +85,7 @@ const Login = () => {
         <div className="text-center mt-6">
           <p className="text-sm text-gray-500">
             Don't have an account?{" "}
-            <Link to="/register">
+            <Link to="/register" state={location?.state}>
               <span className="text-primary underline font-bold cursor-pointer hover:underline">
                 Register
               </span>

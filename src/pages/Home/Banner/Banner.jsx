@@ -6,6 +6,7 @@ import bannerImg02 from "../../../assets/banner/banner2.png";
 import bannerImg03 from "../../../assets/banner/banner3.png";
 import { FiArrowUpRight } from "react-icons/fi";
 import { BiLeftArrow } from "react-icons/bi";
+import { Link } from "react-router";
 
 const Banner = () => {
   const buttons = (
@@ -14,7 +15,9 @@ const Banner = () => {
       <button className="btn bg-black rounded-full px-2.5 animate-bounce hover:animate-none">
         <FiArrowUpRight size={20} className="text-primary" />
       </button>
-      <button className="btn btn-secondary ml-2">Be A Rider</button>
+      <Link to="/rider">
+        <button className="btn btn-secondary ml-2">Be A Rider</button>
+      </Link>
     </div>
   );
   return (
