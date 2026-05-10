@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { Link } from "react-router";
 import SocialLogin from "../../../components/SocialLogin/SocialLogin";
+import axios from "axios";
 
 const Register = () => {
   const {
@@ -12,14 +13,32 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const { registerUser } = useAuth();
+  const { registerUser, updateUserProfile } = useAuth();
 
   const handleRegistration = (data) => {
-    console.log(data);
+    const profileImg = data.photo[0];
+
     registerUser(data.email, data.password)
-      .then((result) => {
-        console.log(result.user);
+      .then(() => {
         toast.success("Registration successful!");
+        //1. store the image and get the photo url
+        const formData = new FormData();
+        formData.append("image", profileImg);
+
+        // 2. Send the photo to store in imgbb and get url
+        const image_API_URL = `https://api.imgbb.com/1/upload?expiration=600&key=${import.meta.env.VITE_image_host_key}`;
+        axios.post(image_API_URL, formData).then((res) => {
+          // update user profile to firebase
+          const userProfile = {
+            displayName: data.name,
+            photoURL: res.data.data.url,
+          };
+          updateUserProfile(userProfile)
+            .then()
+            .catch((error) => {
+              toast.error(error.message);
+            });
+        });
       })
       .catch((error) => {
         toast.error(error.message);
@@ -89,7 +108,7 @@ const Register = () => {
                   acceptedFormats: (files) =>
                     ["image/jpeg", "image/png", "image/webp"].includes(
                       files[0]?.type,
-                    )
+                    ),
                 },
               })}
             />
