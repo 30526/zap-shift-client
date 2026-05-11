@@ -27,7 +27,7 @@ const Navbar = () => {
         <NavLink to="/coverage">Coverage</NavLink>
       </li>
       <li>
-        <NavLink to="">About Us</NavLink>
+        <NavLink to="/send-parcel">Send Parcel</NavLink>
       </li>
       <li>
         <NavLink to="">Pricing</NavLink>
@@ -73,7 +73,7 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal text-accent px-1">{links}</ul>
       </div>
-      <div className="navbar-end">
+      <div className="navbar-end hidden lg:flex">
         {user ? (
           <button
             onClick={handleLogout}
