@@ -1,14 +1,32 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import { useLoaderData } from "react-router";
 
 const SendParcel = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
   const handleSendParcel = (data) => {
     console.log("Data Parcel", data);
+  };
+
+  // get service centers data from loader
+  const serviceCenters = useLoaderData();
+  const duplicateRegions = serviceCenters.map((center) => center.region);
+  const regions = [...new Set(duplicateRegions)];
+  const senderRegions = useWatch({ control, name: "senderRegion" });
+  const receiverRegions = useWatch({ control, name: "receiverRegion" });
+
+  // getting districs from regions
+  const districtsByRegion = (region) => {
+    const regionDistricts = serviceCenters.filter(
+      (center) => center.region === region,
+    );
+    const districts = regionDistricts.map((center) => center.district);
+    return districts;
   };
 
   return (
@@ -91,6 +109,17 @@ const SendParcel = () => {
                 placeholder="Sender Name"
               />
 
+              {/* sender email  */}
+              <label className="label text-black font-semibold">
+                Sender Email
+              </label>
+              <input
+                type="email"
+                className="input peer text-black rounded-lg w-full border-secondary/20 focus:border-primary focus:outline-none not-placeholder-shown:border-primary"
+                {...register("senderEmail")}
+                placeholder="Sender Email"
+              />
+
               {/* sender address  */}
               <label className="label text-black font-semibold mt-2">
                 Sender Address
@@ -113,16 +142,52 @@ const SendParcel = () => {
                 placeholder="Sender Phone No"
               />
 
+              {/* sender region  */}
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-black">
+                  Sender Region
+                </legend>
+                <select
+                  {...register("senderRegion")}
+                  required
+                  defaultValue="Pick a Region"
+                  className="select peer text-black rounded-lg w-full border-secondary/20 focus:border-primary focus:outline-none not-placeholder-shown:border-primary"
+                >
+                  <option>Pick Your Region</option>
+                  {regions.map((region, index) => (
+                    <option
+                      className="focus:bg-primary hover:bg-primary"
+                      key={index}
+                      value={region}
+                    >
+                      {region}
+                    </option>
+                  ))}
+                </select>
+              </fieldset>
+
               {/* Sender district  */}
-              <label className="label text-black font-semibold mt-2">
-                Sender District
-              </label>
-              <input
-                type="text"
-                className="input peer text-black rounded-lg w-full border-secondary/20 focus:border-primary focus:outline-none not-placeholder-shown:border-primary"
-                {...register("senderDistrict")}
-                placeholder="Sender District"
-              />
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-black">
+                  Sender District
+                </legend>
+                <select
+                  {...register("senderDistrict")}
+                  defaultValue="Pick a District"
+                  className="select peer text-black rounded-lg w-full border-secondary/20 focus:border-primary focus:outline-none not-placeholder-shown:border-primary"
+                >
+                  <option disabled={true}>Pick a Region First</option>
+                  {districtsByRegion(senderRegions).map((district, index) => (
+                    <option
+                      className="focus:bg-primary hover:bg-primary"
+                      key={index}
+                      value={district}
+                    >
+                      {district}
+                    </option>
+                  ))}{" "}
+                </select>
+              </fieldset>
 
               {/* pickup instruction */}
               <label className="label text-black font-semibold mt-2">
@@ -153,6 +218,17 @@ const SendParcel = () => {
                 placeholder="Receiver Name"
               />
 
+              {/* receiver email  */}
+              <label className="label text-black font-semibold">
+                Receiver Email
+              </label>
+              <input
+                type="email"
+                className="input peer text-black rounded-lg w-full border-secondary/20 focus:border-primary focus:outline-none not-placeholder-shown:border-primary"
+                {...register("receiverEmail")}
+                placeholder="Receiver Email"
+              />
+
               {/* receiver address  */}
               <label className="label text-black font-semibold mt-2">
                 Receiver Address
@@ -175,16 +251,52 @@ const SendParcel = () => {
                 placeholder="Receiver Phone No"
               />
 
+              {/* receiver region  */}
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-black">
+                  Receiver Region
+                </legend>
+                <select
+                  {...register("receiverRegion")}
+                  required
+                  defaultValue="Pick a Region"
+                  className="select peer text-black rounded-lg w-full border-secondary/20 focus:border-primary focus:outline-none not-placeholder-shown:border-primary"
+                >
+                  <option>Pick Your Region</option>
+                  {regions.map((region, index) => (
+                    <option
+                      className="focus:bg-primary hover:bg-primary"
+                      key={index}
+                      value={region}
+                    >
+                      {region}
+                    </option>
+                  ))}
+                </select>
+              </fieldset>
+
               {/* Receiver district  */}
-              <label className="label text-black font-semibold mt-2">
-                Receiver District
-              </label>
-              <input
-                type="text"
-                className="input peer text-black rounded-lg w-full border-secondary/20 focus:border-primary focus:outline-none not-placeholder-shown:border-primary"
-                {...register("receiverDistrict")}
-                placeholder="Receiver District"
-              />
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-black">
+                  Receiver District
+                </legend>
+                <select
+                  {...register("receiverDistrict")}
+                  defaultValue="Pick a District"
+                  className="select peer text-black rounded-lg w-full border-secondary/20 focus:border-primary focus:outline-none not-placeholder-shown:border-primary"
+                >
+                  <option disabled={true}>Pick Your Region First</option>
+                  {districtsByRegion(receiverRegions).map((district, index) => (
+                    <option
+                      className="focus:bg-primary hover:bg-primary"
+                      key={index}
+                      value={district}
+                    >
+                      {district}
+                    </option>
+                  ))}
+                </select>
+              </fieldset>
 
               {/* Delivery instruction */}
               <label className="label text-black font-semibold mt-2">
