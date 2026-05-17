@@ -53,6 +53,7 @@ const SendParcel = () => {
         cost = minCharge + extraCharge;
       }
     }
+    data.cost = cost; 
     Swal.fire({
       title: "Please Review the Cost",
       html: `You will be charged <span style="color: #03373d; font-weight: bold; font-size: 1.125rem;">${cost} BDT</span>`,
