@@ -1,6 +1,7 @@
 import React from "react";
 import { FaTrashAlt, FaEye, FaCalendarAlt } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
+import { FaRegEdit } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
@@ -113,6 +114,13 @@ const MyParcel = () => {
                     {/* Actions */}
                     <td className="py-4 pr-6 text-right">
                       <div className="flex justify-end gap-2">
+                        {/* Edit Button */}
+                        <button
+                          className="btn btn-square btn-sm btn-ghost text-accent hover:text-secondary hover:bg-base-200 tooltip tooltip-top"
+                          data-tip="View Details"
+                        >
+                          <FaRegEdit className="size-4" />
+                        </button>
                         {/* View Button */}
                         <button
                           className="btn btn-square btn-sm btn-ghost text-accent hover:text-secondary hover:bg-base-200 tooltip tooltip-top"
