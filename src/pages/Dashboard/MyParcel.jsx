@@ -30,22 +30,25 @@ const MyParcel = () => {
       showCancelButton: true,
       confirmButtonColor: "#D92243", // Primary (lime green)
       cancelButtonColor: "#03373d", // Secondary (dark teal)
-      confirmButtonText:
-        '<span style=" font-weight: 600;">Delete</span>',
+      confirmButtonText: '<span style=" font-weight: 600;">Delete</span>',
       cancelButtonText: '<span style="font-weight: 600;">Cancel</span>',
       iconColor: "#caeb66", // Warning icon color
     }).then((result) => {
       if (result.isConfirmed) {
         // delete the parcel data from database
-        // Swal.fire({
-        //   title: "Thank you f",
-        //   text: "Your file has been deleted.",
-        //   icon: "success",
-        //   confirmButtonColor: "#caeb66",
-        //   confirmButtonText:
-        //     '<span style="color: #0b0b0b; font-weight: 600;">OK</span>',
-        //   iconColor: "#caeb66", // Success icon color
-        // });
+        axiosSecure.delete(`/parcels/${id}`).then((res) => {
+          if (res.data.deletedCount) {
+            Swal.fire({
+              title: "Deleted",
+              text: "Your parcel request has been deleted.",
+              icon: "success",
+              confirmButtonColor: "#caeb66",
+              confirmButtonText:
+                '<span style="color: #0b0b0b; font-weight: 600;">OK</span>',
+              iconColor: "#caeb66", // Success icon color
+            });
+          }
+        });
       }
     });
   };
