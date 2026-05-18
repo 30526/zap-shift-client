@@ -11,7 +11,7 @@ const MyParcel = () => {
   const axiosSecure = useAxiosSecure();
 
   // tanstack query
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [], refetch } = useQuery({
     queryKey: ["my-parcels", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/parcels?email=${user.email}`);
@@ -38,6 +38,8 @@ const MyParcel = () => {
         // delete the parcel data from database
         axiosSecure.delete(`/parcels/${id}`).then((res) => {
           if (res.data.deletedCount) {
+            // refresh the fetched data with tanstack refetch function
+            refetch();
             Swal.fire({
               title: "Deleted",
               text: "Your parcel request has been deleted.",
