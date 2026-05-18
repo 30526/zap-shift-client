@@ -18,7 +18,10 @@ const MyParcel = () => {
     },
   });
 
-  console.log(parcels);
+  //  delete parcel
+  const handleParcelDelete = (id) => {
+    console.log(id);
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-6">
@@ -131,6 +134,7 @@ const MyParcel = () => {
 
                         {/* Delete Button */}
                         <button
+                          onClick={() => handleParcelDelete(parcel._id)}
                           className="btn btn-square btn-sm btn-ghost text-error/70 hover:text-error hover:bg-error/10 tooltip tooltip-top"
                           data-tip="Delete Parcel"
                         >
