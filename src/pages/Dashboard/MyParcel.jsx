@@ -4,6 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import { FaRegEdit } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const MyParcel = () => {
   const { user } = useAuth();
@@ -21,6 +22,32 @@ const MyParcel = () => {
   //  delete parcel
   const handleParcelDelete = (id) => {
     console.log(id);
+    // ask if he is sure to delete or not with sweet alert
+    Swal.fire({
+      title: "Are you sure to delete this?",
+      html: `You won't be able to revert this!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#D92243", // Primary (lime green)
+      cancelButtonColor: "#03373d", // Secondary (dark teal)
+      confirmButtonText:
+        '<span style=" font-weight: 600;">Delete</span>',
+      cancelButtonText: '<span style="font-weight: 600;">Cancel</span>',
+      iconColor: "#caeb66", // Warning icon color
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // delete the parcel data from database
+        // Swal.fire({
+        //   title: "Thank you f",
+        //   text: "Your file has been deleted.",
+        //   icon: "success",
+        //   confirmButtonColor: "#caeb66",
+        //   confirmButtonText:
+        //     '<span style="color: #0b0b0b; font-weight: 600;">OK</span>',
+        //   iconColor: "#caeb66", // Success icon color
+        // });
+      }
+    });
   };
 
   return (
