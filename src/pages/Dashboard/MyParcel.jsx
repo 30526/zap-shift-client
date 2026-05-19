@@ -5,6 +5,7 @@ import { FaRegEdit } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const MyParcel = () => {
   const { user } = useAuth();
@@ -140,16 +141,18 @@ const MyParcel = () => {
                           Paid
                         </span>
                       ) : (
-                        <span className="badge badge-warning badge-sm gap-1 py-3 px-3 font-semibold bg-amber-50 text-amber-700 border-amber-200">
-                          <span className="size-1.5 rounded-full bg-amber-500"></span>
-                          Pending
-                        </span>
+                        <Link to={`/dashboard/payment/${parcel._id}`}>
+                          <button className="badge cursor-pointer badge-warning badge-sm gap-1 py-3 px-3 font-semibold bg-amber-50 text-amber-700 border-amber-200">
+                            <span className="size-1.5 rounded-full bg-amber-500"></span>
+                            Pending
+                          </button>
+                        </Link>
                       )}
                     </td>
 
                     {/* delivary status  */}
                     <td className="py-4 font-semibold text-secondary">
-                      {parcel.deliveryStatus}
+                      {parcel?.deliveryStatus || "pending"}
                     </td>
 
                     {/* Actions */}
