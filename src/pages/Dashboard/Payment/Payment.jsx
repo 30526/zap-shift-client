@@ -24,8 +24,8 @@ const Payment = () => {
       parcelName: parcel.parcelName,
     };
 
-    const res = await axiosSecure.post('/create-checkout-session', paymentInfo);
-    console.log(res.data);
+    const res = await axiosSecure.post("/create-checkout-session", paymentInfo);
+    window.location.href = res.data.url;
   };
 
   if (isLoading) {
