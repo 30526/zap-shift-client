@@ -88,9 +88,10 @@ const MyParcel = () => {
               <tr className="bg-base-200 border-b border-base-300 text-secondary font-semibold text-sm">
                 <th className="py-4 pl-6 w-12 text-center">#</th>
                 <th className="py-4">Item Details</th>
-                <th className="py-4">Delivery Cost</th>
-                <th className="py-4">Payment Status</th>
-                <th className="py-4 pr-6 text-right">Actions</th>
+                <th className="py-4">Cost</th>
+                <th className="py-4">Payment</th>
+                <th className="py-4">Delivery Status</th>
+                <th className="py-4 pr-6 text-center">Actions</th>
               </tr>
             </thead>
 
@@ -146,9 +147,14 @@ const MyParcel = () => {
                       )}
                     </td>
 
+                    {/* delivary status  */}
+                    <td className="py-4 font-semibold text-secondary">
+                      {parcel.deliveryStatus}
+                    </td>
+
                     {/* Actions */}
-                    <td className="py-4 pr-6 text-right">
-                      <div className="flex justify-end gap-2">
+                    <td className="py-4 pr-6">
+                      <div className="flex justify-center gap-2">
                         {/* Edit Button */}
                         <button
                           className="btn btn-square btn-sm btn-ghost text-accent hover:text-secondary hover:bg-base-200 tooltip tooltip-top"
