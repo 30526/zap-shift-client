@@ -10,6 +10,7 @@ import PrivateRoute from "./PrivateRoute";
 import SendParcel from "../pages/SendParcel/SendParcel";
 import DashboardLayout from "../layout/DashboardLayout";
 import MyParcel from "../pages/Dashboard/MyParcel";
+import Payment from "../pages/Dashboard/Payment/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
       {
         path: "my-parcel",
         Component: MyParcel,
+      },
+      {
+        path: "payment/:parcelId",
+        Component: Payment,
       },
     ],
   },
