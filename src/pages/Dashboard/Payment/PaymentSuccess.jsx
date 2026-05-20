@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import {
   FaCheckCircle,
   FaCalendarAlt,
@@ -8,6 +8,10 @@ import {
 } from "react-icons/fa";
 
 const PaymentSuccess = () => {
+  const [searchParams] = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+  console.log(sessionId);
+
   // In a real app, you might fetch these from URL search params or state passed via router
   const transactionId =
     "TXN_" + Math.random().toString(36).substr(2, 9).toUpperCase();
