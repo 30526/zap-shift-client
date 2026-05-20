@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import {
   FaCheckCircle,
@@ -9,6 +9,7 @@ import {
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const PaymentSuccess = () => {
+  const [paymentInfo, setPaymentInfo] = useState({});
   const axiosSecure = useAxiosSecure();
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
@@ -18,15 +19,15 @@ const PaymentSuccess = () => {
     if (sessionId) {
       axiosSecure
         .patch(`/payment-success?session_id=${sessionId}`)
-        .then(() => {
-          // console.log(res.data);
+        .then((res) => {
+          setPaymentInfo({
+            transactionId: res.data.transactionId,
+            trackingId: res.data.trackingId,
+          });
         });
     }
   }, [sessionId, axiosSecure]);
 
-  // In a real app, you might fetch these from URL search params or state passed via router
-  const transactionId =
-    "TXN_" + Math.random().toString(36).substr(2, 9).toUpperCase();
   const currentDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -68,7 +69,15 @@ const PaymentSuccess = () => {
               Transaction ID
             </span>
             <span className="font-mono font-bold text-secondary">
-              {transactionId}
+              {paymentInfo.transactionId}
+            </span>
+          </div>
+          <div className="flex justify-between items-center text-xs">
+            <span className="text-accent font-medium uppercase tracking-wider">
+              Tracking ID
+            </span>
+            <span className="font-mono font-bold text-secondary">
+              {paymentInfo.trackingId}
             </span>
           </div>
 

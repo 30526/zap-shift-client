@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
@@ -14,6 +14,7 @@ const SendParcel = () => {
   } = useForm();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   // get service centers data from loader
   const serviceCenters = useLoaderData();
@@ -53,7 +54,7 @@ const SendParcel = () => {
         cost = minCharge + extraCharge;
       }
     }
-    data.cost = cost; 
+    data.cost = cost;
     Swal.fire({
       title: "Please Review the Cost",
       html: `You will be charged <span style="color: #03373d; font-weight: bold; font-size: 1.125rem;">${cost} BDT</span>`,
@@ -69,21 +70,26 @@ const SendParcel = () => {
       if (result.isConfirmed) {
         // send the parcel info to the database
         axiosSecure.post("/parcels", data).then((res) => {
-          console.log("After saving parcel", res.data);
+          if (res.data.insertedId) {
+            navigate("/dashboard/my-parcel");
+            Swal.fire({
+              position: "center", // Moves the alert to the exact center of the screen
+              icon: "success",
+              iconColor: "#caeb66", // Brand primary lime
+              title: "Your parcel has created, please pay now!",
+              showConfirmButton: false,
+              timer: 2500,
+              background: "#03373d", // Brand secondary deep dark green
+              color: "#ffffff", // High contrast text color
+              customClass: {
+                popup: "rounded-2xl border border-[#b8b7b7]/10 shadow-2xl", // Smooth corner matching
+                title: "font-bold text-lg tracking-tight",
+              },
+            });
+          }
         });
-
-        // Swal.fire({
-        //   title: "Thank you f",
-        //   text: "Your file has been deleted.",
-        //   icon: "success",
-        //   confirmButtonColor: "#caeb66",
-        //   confirmButtonText:
-        //     '<span style="color: #0b0b0b; font-weight: 600;">OK</span>',
-        //   iconColor: "#caeb66", // Success icon color
-        // });
       }
     });
-    console.log("cost", cost);
   };
 
   return (
