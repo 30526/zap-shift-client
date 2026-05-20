@@ -135,7 +135,7 @@ const MyParcel = () => {
 
                     {/* Payment Status (Styled with clean badges) */}
                     <td className="py-4">
-                      {parcel.paymentStatus === "Paid" ? (
+                      {parcel.paymentStatus === "paid" ? (
                         <span className="badge badge-success badge-sm gap-1 py-3 px-3 font-semibold bg-emerald-50 text-emerald-700 border-emerald-200">
                           <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                           Paid
@@ -144,7 +144,7 @@ const MyParcel = () => {
                         <Link to={`/dashboard/payment/${parcel._id}`}>
                           <button className="badge cursor-pointer badge-warning badge-sm gap-1 py-3 px-3 font-semibold bg-amber-50 text-amber-700 border-amber-200">
                             <span className="size-1.5 rounded-full bg-amber-500"></span>
-                            Pending
+                            Pay Now
                           </button>
                         </Link>
                       )}

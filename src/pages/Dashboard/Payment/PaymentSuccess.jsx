@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
 import {
   FaCheckCircle,
@@ -6,11 +6,23 @@ import {
   FaArrowRight,
   FaPrint,
 } from "react-icons/fa";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const PaymentSuccess = () => {
+  const axiosSecure = useAxiosSecure();
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
-  console.log(sessionId);
+  // console.log(sessionId);
+
+  useEffect(() => {
+    if (sessionId) {
+      axiosSecure
+        .patch(`/payment-success?session_id=${sessionId}`)
+        .then(() => {
+          // console.log(res.data);
+        });
+    }
+  }, [sessionId, axiosSecure]);
 
   // In a real app, you might fetch these from URL search params or state passed via router
   const transactionId =
