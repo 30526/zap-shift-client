@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, NavLink, Outlet } from "react-router";
-import { FaBoxOpen } from "react-icons/fa";
+import { FaBoxOpen, FaCreditCard } from "react-icons/fa";
 import Logo from "../components/Logo/Logo";
 
 const DashboardLayout = () => {
@@ -76,10 +76,22 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">Settings</span>
               </button>
             </li>
-            <li className="is-drawer-close:tooltip is-drawer-close:tooltip-right">
+            <li
+              className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+              data-tip="May Parcels"
+            >
               <NavLink to="/dashboard/my-parcel">
                 <FaBoxOpen></FaBoxOpen>
                 <span className="is-drawer-close:hidden">My Parcel</span>
+              </NavLink>
+            </li>
+            <li
+              className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+              data-tip="Payment History"
+            >
+              <NavLink to="/dashboard/payment-history">
+                <FaCreditCard />
+                <span className="is-drawer-close:hidden">Payment History</span>
               </NavLink>
             </li>
             <Link className="absolute bottom-8" to={"/"}>
