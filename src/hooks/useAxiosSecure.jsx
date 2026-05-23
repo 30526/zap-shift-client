@@ -11,11 +11,14 @@ const useAxiosSecure = () => {
 
   // request interceptor
   useEffect(() => {
-    axiosSecure.interceptors.request.use((config) => {
+    const interceptor = axiosSecure.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${user?.accessToken}`;
       return config;
     });
 
+   
+
+    return () => axiosSecure.interceptors.request.eject(interceptor);
   }, [user]);
 
   return axiosSecure;
