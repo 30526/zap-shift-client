@@ -24,7 +24,7 @@ const Register = () => {
     console.lo;
 
     registerUser(data.email, data.password)
-      .then((res) => {
+      .then(() => {
         toast.success("Registration successful!");
 
         // 1. store the image and get the photo url
