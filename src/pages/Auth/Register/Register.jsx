@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../../../components/SocialLogin/SocialLogin";
 import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Register = () => {
   const {
@@ -16,27 +17,40 @@ const Register = () => {
   const { registerUser, updateUserProfile } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const handleRegistration = (data) => {
     const profileImg = data.photo[0];
+    console.lo;
 
     registerUser(data.email, data.password)
-      .then(() => {
+      .then((res) => {
         toast.success("Registration successful!");
-        //1. store the image and get the photo url
+
+        // 1. store the image and get the photo url
         const formData = new FormData();
         formData.append("image", profileImg);
 
         // 2. Send the photo to store in imgbb and get url
         const image_API_URL = `https://api.imgbb.com/1/upload?expiration=600&key=${import.meta.env.VITE_image_host_key}`;
         axios.post(image_API_URL, formData).then((res) => {
-          // update user profile to firebase
+          // 3. update user profile to firebase
+          const photoURL = res.data.data.url;
           const userProfile = {
             displayName: data.name,
-            photoURL: res.data.data.url,
+            photoURL: photoURL,
           };
+
           updateUserProfile(userProfile)
             .then(() => {
+              // 4. store user info in database
+              const userInfo = {
+                email: data.email,
+                displayName: data.name,
+                photoURL: photoURL,
+              };
+              axiosSecure.post("/users", userInfo).then(() => {});
+
               navigate(location?.state || "/");
             })
             .catch((error) => {
