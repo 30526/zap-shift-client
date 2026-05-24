@@ -41,17 +41,17 @@ const ApproveRider = () => {
     });
   };
 
-  // handle rider approval
-  const handleRiderApproval = (id) => {
-    const updateInfo = { status: "approved" };
-    axiosSecure.patch(`/riders/${id}`, updateInfo).then((res) => {
+  // update rider status
+  const updateRiderStatus = (rider, newStatus) => {
+    const updateInfo = { status: newStatus, email: rider.email };
+    axiosSecure.patch(`/riders/${rider._id}`, updateInfo).then((res) => {
       if (res.data.modifiedCount > 0) {
         refetch();
         Swal.fire({
           position: "center", // Moves the alert to the exact center of the screen
           icon: "success",
           iconColor: "#caeb66", // Brand primary lime
-          title: "Rider Approved Successfully.",
+          title: `Rider Has Been ${newStatus}`,
           showConfirmButton: false,
           timer: 2500,
           background: "#03373d", // Brand secondary deep dark green
@@ -63,6 +63,16 @@ const ApproveRider = () => {
         });
       }
     });
+  };
+
+  // handle rider approval
+  const handleRiderApproval = (rider) => {
+    updateRiderStatus(rider, "approved");
+  };
+
+  // handle rider rejection
+  const handleRiderRejection = (rider) => {
+    updateRiderStatus(rider, "rejected");
   };
 
   if (isLoading) {
@@ -202,7 +212,7 @@ const ApproveRider = () => {
 
                     {/* Column 5: Approval Action Execution Module */}
                     <td className="py-5 pr-6 align-middle">
-                      {rider.status === "pending" ? (
+                      {rider.status === "pending" && (
                         <div className="flex items-center justify-center gap-2">
                           {/* 1. ACCEPT BUTTON */}
                           <div
@@ -210,7 +220,7 @@ const ApproveRider = () => {
                             data-tip="Accept Application"
                           >
                             <button
-                              onClick={() => handleRiderApproval(rider._id)}
+                              onClick={() => handleRiderApproval(rider)}
                               className="btn btn-square btn-sm min-h-9 h-9 w-9 bg-primary/50 hover:bg-[#caeb66] text-secondary border-none rounded-xl transition-all shadow-xs group"
                             >
                               <svg
@@ -235,7 +245,10 @@ const ApproveRider = () => {
                             className="tooltip tooltip-top font-semibold text-xs"
                             data-tip="Reject Application"
                           >
-                            <button className="btn btn-square btn-sm min-h-9 h-9 w-9 bg-amber-500/10 hover:bg-amber-500 text-amber-600 hover:text-white border-none rounded-xl transition-all shadow-xs group">
+                            <button
+                              onClick={() => handleRiderRejection(rider)}
+                              className="btn btn-square btn-sm min-h-9 h-9 w-9 bg-amber-500/10 hover:bg-amber-500 text-amber-600 hover:text-white border-none rounded-xl transition-all shadow-xs group"
+                            >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -263,10 +276,22 @@ const ApproveRider = () => {
                             </button>
                           </div>
                         </div>
-                      ) : (
+                      )}
+
+                      {/* APPROVED BADGE */}
+                      {rider.status === "approved" && (
                         <div className="flex items-center justify-center">
-                          <div className="font-semibold  flex items-center badge badge-soft badge-success">
+                          <div className="font-bold flex items-center badge badge-success bg-emerald-50 text-emerald-700 border-emerald-100 rounded-md px-2.5 py-3 text-xs tracking-wide uppercase">
                             Approved
+                          </div>
+                        </div>
+                      )}
+
+                      {/* REJECTED BADGE */}
+                      {rider.status === "rejected" && (
+                        <div className="flex items-center justify-center">
+                          <div className="font-bold flex items-center badge badge-error bg-rose-50 text-rose-700 border-rose-100 rounded-md px-2.5 py-3 text-xs tracking-wide uppercase">
+                            Rejected
                           </div>
                         </div>
                       )}
