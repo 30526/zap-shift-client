@@ -9,13 +9,19 @@ import {
   FaMotorcycle,
   FaRegClock,
   FaRegIdBadge,
+  FaTrash,
   FaUserCheck,
 } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const ApproveRider = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { isLoading, data: riders = [] } = useQuery({
+  const {
+    isLoading,
+    data: riders = [],
+    refetch,
+  } = useQuery({
     queryKey: ["riders", "pending"],
     queryFn: async () => {
       const res = await axiosSecure.get("/riders");
@@ -32,6 +38,30 @@ const ApproveRider = () => {
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
+    });
+  };
+
+  // handle rider approval
+  const handleRiderApproval = (id) => {
+    const updateInfo = { status: "approved" };
+    axiosSecure.patch(`/riders/${id}`, updateInfo).then((res) => {
+      if (res.data.modifiedCount > 0) {
+        refetch();
+        Swal.fire({
+          position: "center", // Moves the alert to the exact center of the screen
+          icon: "success",
+          iconColor: "#caeb66", // Brand primary lime
+          title: "Rider Approved Successfully.",
+          showConfirmButton: false,
+          timer: 2500,
+          background: "#03373d", // Brand secondary deep dark green
+          color: "#ffffff", // High contrast text color
+          customClass: {
+            popup: "rounded-2xl border border-[#b8b7b7]/10 shadow-2xl", // Smooth corner matching
+            title: "font-bold text-lg tracking-tight",
+          },
+        });
+      }
     });
   };
 
@@ -171,10 +201,75 @@ const ApproveRider = () => {
                     </td>
 
                     {/* Column 5: Approval Action Execution Module */}
-                    <td className="py-5 pr-6 text-center align-middle">
-                      <button className="btn btn-sm min-h-9 h-9 px-5 bg-[#caeb66] hover:bg-[#b8d654] disabled:bg-base-200 border-none text-[#03373d] font-black rounded-xl shadow-xs tracking-wide transition-all uppercase text-xs">
-                        {rider.status === "pending" ? "Pending" : "Approve"}
-                      </button>
+                    <td className="py-5 pr-6 align-middle">
+                      {rider.status === "pending" ? (
+                        <div className="flex items-center justify-center gap-2">
+                          {/* 1. ACCEPT BUTTON */}
+                          <div
+                            className="tooltip tooltip-top font-semibold text-xs"
+                            data-tip="Accept Application"
+                          >
+                            <button
+                              onClick={() => handleRiderApproval(rider._id)}
+                              className="btn btn-square btn-sm min-h-9 h-9 w-9 bg-primary/50 hover:bg-[#caeb66] text-secondary border-none rounded-xl transition-all shadow-xs group"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={2.5}
+                                stroke="currentColor"
+                                className="size-4 group-hover:scale-110 transition-transform"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="m4.5 12.75 6 6 9-13.5"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+
+                          {/* 2. REJECT BUTTON */}
+                          <div
+                            className="tooltip tooltip-top font-semibold text-xs"
+                            data-tip="Reject Application"
+                          >
+                            <button className="btn btn-square btn-sm min-h-9 h-9 w-9 bg-amber-500/10 hover:bg-amber-500 text-amber-600 hover:text-white border-none rounded-xl transition-all shadow-xs group">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={2.5}
+                                stroke="currentColor"
+                                className="size-4 group-hover:scale-110 transition-transform"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+
+                          {/* 3. TRASH BUTTON */}
+                          <div
+                            className="tooltip tooltip-top font-semibold text-xs"
+                            data-tip="Delete Permanently"
+                          >
+                            <button className="btn btn-square btn-sm min-h-9 h-9 w-9 bg-rose-500/10 hover:bg-rose-500 text-rose-600 hover:text-white border-none rounded-xl transition-all shadow-xs group">
+                              <FaTrash />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center">
+                          <div className="font-semibold  flex items-center badge badge-soft badge-success">
+                            Approved
+                          </div>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))
