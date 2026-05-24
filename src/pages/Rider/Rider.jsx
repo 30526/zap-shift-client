@@ -35,8 +35,8 @@ const Rider = () => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 md:p-10 min-h-screen flex items-center justify-center">
-      <div className="w-full bg-white border border-base-200 rounded-3xl p-6 md:p-12 shadow-xs grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <div className="max-w-7xl py-6 md:py-10 min-h-screen flex items-center justify-center">
+      <div className="w-7xl bg-white border border-base-200 rounded-3xl p-6 md:p-12 shadow-xs grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Left Column: Form Section */}
         <div className="lg:col-span-7 space-y-6">
           <div className="space-y-2">
@@ -61,13 +61,13 @@ const Rider = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Name */}
               <div className="form-control w-full">
-                <label className="label-text text-xs font-bold text-[#03373d] mb-1.5">
+                <label className="label-text text-xs font-bold text-black mb-1.5">
                   Your Name
                 </label>
                 <input
                   type="text"
                   placeholder="Your Name"
-                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.name ? "border-error focus:border-error" : "focus:border-secondary"}`}
+                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.name ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("name", { required: "Name is required" })}
                 />
                 {errors.name && (
@@ -79,13 +79,13 @@ const Rider = () => {
 
               {/* Driving License */}
               <div className="form-control w-full">
-                <label className="label-text text-xs font-bold text-[#03373d] mb-1.5">
+                <label className="label-text text-xs font-bold text-black mb-1.5">
                   Driving License Number
                 </label>
                 <input
                   type="text"
                   placeholder="Driving License Number"
-                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.licenseNumber ? "border-error focus:border-error" : "focus:border-secondary"}`}
+                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.licenseNumber ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("licenseNumber", {
                     required: "Driving license is required",
                   })}
@@ -99,13 +99,13 @@ const Rider = () => {
 
               {/* Email */}
               <div className="form-control w-full">
-                <label className="label-text text-xs font-bold text-[#03373d] mb-1.5">
+                <label className="label-text text-xs font-bold text-black mb-1.5">
                   Your Email
                 </label>
                 <input
                   type="email"
                   placeholder="Your Email"
-                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.email ? "border-error focus:border-error" : "focus:border-secondary"}`}
+                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.email ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -123,13 +123,13 @@ const Rider = () => {
 
               {/* Phone Number */}
               <div className="form-control w-full">
-                <label className="label-text text-xs font-bold text-[#03373d] mb-1.5">
+                <label className="label-text text-xs font-bold text-black mb-1.5">
                   Phone Number
                 </label>
                 <input
                   type="tel"
                   placeholder="Phone Number"
-                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.phone ? "border-error focus:border-error" : "focus:border-secondary"}`}
+                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.phone ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("phone", {
                     required: "Phone number is required",
                   })}
@@ -143,11 +143,11 @@ const Rider = () => {
 
               {/* Region Select */}
               <div className="form-control w-full">
-                <label className="label-text text-xs font-bold text-[#03373d] mb-1.5">
+                <label className="label-text text-xs font-bold text-black mb-1.5">
                   Your Region
                 </label>
                 <select
-                  className={`select select-bordered w-full bg-base-50/30 text-secondary text-sm font-medium focus:outline-hidden ${errors.region ? "border-error focus:border-error" : "focus:border-secondary"}`}
+                  className={`select select-bordered w-full bg-base-50/30 text-secondary text-sm font-medium focus:outline-hidden ${errors.region ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("region", {
                     required: "Please select a region",
                   })}
@@ -166,11 +166,11 @@ const Rider = () => {
 
               {/* District Select */}
               <div className="form-control w-full">
-                <label className="label-text text-xs font-bold text-[#03373d] mb-1.5">
+                <label className="label-text text-xs font-bold text-black mb-1.5">
                   Your District
                 </label>
                 <select
-                  className={`select select-bordered w-full bg-base-50/30 text-secondary text-sm font-medium focus:outline-hidden ${errors.district ? "border-error focus:border-error" : "focus:border-secondary"}`}
+                  className={`select select-bordered w-full bg-base-50/30 text-secondary text-sm font-medium focus:outline-hidden ${errors.district ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("district", {
                     required: "Please select a district",
                   })}
@@ -189,13 +189,13 @@ const Rider = () => {
 
               {/* NID No */}
               <div className="form-control w-full md:col-span-2">
-                <label className="label-text text-xs font-bold text-[#03373d] mb-1.5">
+                <label className="label-text text-xs font-bold text-black mb-1.5">
                   NID No
                 </label>
                 <input
                   type="text"
                   placeholder="NID"
-                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.nid ? "border-error focus:border-error" : "focus:border-secondary"}`}
+                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.nid ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("nid", { required: "NID number is required" })}
                 />
                 {errors.nid && (
@@ -207,13 +207,13 @@ const Rider = () => {
 
               {/* Bike Brand Model and Year */}
               <div className="form-control w-full">
-                <label className="label-text text-xs font-bold text-[#03373d] mb-1.5">
+                <label className="label-text text-xs font-bold text-black mb-1.5">
                   Bike Brand Model and Year
                 </label>
                 <input
                   type="text"
                   placeholder="Bike Brand Model and Year"
-                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.bikeModel ? "border-error focus:border-error" : "focus:border-secondary"}`}
+                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.bikeModel ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("bikeModel", {
                     required: "Bike details are required",
                   })}
@@ -227,13 +227,13 @@ const Rider = () => {
 
               {/* Bike Registration Number */}
               <div className="form-control w-full">
-                <label className="label-text text-xs font-bold text-[#03373d] mb-1.5">
+                <label className="label-text text-xs font-bold text-black mb-1.5">
                   Bike Registration Number
                 </label>
                 <input
                   type="text"
                   placeholder="Bike Registration Number"
-                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.bikeRegistration ? "border-error focus:border-error" : "focus:border-secondary"}`}
+                  className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.bikeRegistration ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("bikeRegistration", {
                     required: "Bike registration number is required",
                   })}
@@ -247,12 +247,12 @@ const Rider = () => {
 
               {/* Tell Us About Yourself */}
               <div className="form-control w-full md:col-span-2">
-                <label className="label-text text-xs font-bold text-[#03373d] mb-1.5">
+                <label className="label-text text-xs font-bold text-black mb-1.5">
                   Tell Us About Yourself
                 </label>
                 <textarea
                   placeholder="Tell Us About Yourself"
-                  className={`textarea textarea-bordered w-full bg-base-50/30 text-secondary text-sm h-24 resize-none focus:outline-hidden ${errors.about ? "border-error focus:border-error" : "focus:border-secondary"}`}
+                  className={`textarea textarea-bordered w-full bg-base-50/30 text-secondary text-sm h-24 resize-none focus:outline-hidden ${errors.about ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("about", {
                     required: "Please write a brief summary about yourself",
                   })}
@@ -289,7 +289,7 @@ const Rider = () => {
                 e.target.nextSibling.style.display = "flex";
               }}
             />
-            <div className="hidden flex-col items-center justify-center p-8 bg-base-50 border border-dashed border-base-300 rounded-2xl text-center space-y-2">
+            <div className="flex-col items-center justify-center p-8 bg-base-50 border border-dashed border-base-300 rounded-2xl text-center space-y-2">
               <div className="text-6xl">🏍️</div>
               <h4 className="font-bold text-secondary">Join Our Network</h4>
               <p className="text-xs text-accent">
