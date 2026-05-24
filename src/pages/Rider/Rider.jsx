@@ -18,7 +18,8 @@ const Rider = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const serviceCenters = useLoaderData();
-  console.log("Loaded Service Centers Data:", serviceCenters);
+
+  // get the regions
   const regionDuplicate = serviceCenters.map((center) => center.region);
 
   // remove duplicate regions
@@ -37,8 +38,27 @@ const Rider = () => {
   };
 
   const handleRiderApplication = (data) => {
-    console.log("Submitted Rider Data via RHF:", data);
-    reset(); // Clear form fields upon success
+    // store rider data in the database
+    axiosSecure.post("/riders", data).then((res) => {
+      if (res.data.insertedId) {
+        Swal.fire({
+          position: "center", // Moves the alert to the exact center of the screen
+          icon: "success",
+          iconColor: "#caeb66", // Brand primary lime
+          title:
+            "Your Application has been Submitted. We will reach you within 48 hours.",
+          showConfirmButton: false,
+          timer: 2500,
+          background: "#03373d", // Brand secondary deep dark green
+          color: "#ffffff", // High contrast text color
+          customClass: {
+            popup: "rounded-2xl border border-[#b8b7b7]/10 shadow-2xl", // Smooth corner matching
+            title: "font-bold text-lg tracking-tight",
+          },
+        });
+      }
+    });
+    // reset(); // Clear form fields upon success
   };
 
   return (
@@ -52,7 +72,7 @@ const Rider = () => {
             </h1>
             <p className="text-xs md:text-sm text-accent/90 max-w-xl leading-relaxed">
               Enjoy fast, reliable parcel delivery with real-time tracking and
-              zero hassle. From personal packages to business shipments — we
+              zero hassle. From personal packages to business shipments, we
               deliver on time, every time.
             </p>
           </div>
@@ -76,6 +96,7 @@ const Rider = () => {
                 </label>
                 <input
                   type="text"
+                  defaultValue={user?.displayName || ""}
                   placeholder="Your Name"
                   className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.name ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("name", { required: "Name is required" })}
@@ -114,6 +135,7 @@ const Rider = () => {
                 </label>
                 <input
                   type="email"
+                  defaultValue={user?.email || ""}
                   placeholder="Your Email"
                   className={`input input-bordered w-full bg-base-50/30 text-secondary text-sm focus:outline-hidden ${errors.email ? "border-error focus:border-error" : "focus:border-primary"}`}
                   {...register("email", {
