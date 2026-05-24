@@ -1,7 +1,10 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import Swal from "sweetalert2";
 import rider from "../../assets/agent-pending.png";
+import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useLoaderData } from "react-router";
 
 const Rider = () => {
   // Initialize react-hook-form structures
@@ -9,27 +12,21 @@ const Rider = () => {
     register,
     handleSubmit,
     formState: { errors },
+    control,
     reset,
   } = useForm();
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const serviceCenters = useLoaderData();
+  const regionDuplicate = serviceCenters.map((center) => center.region);
 
-  const onSubmit = (data) => {
-    // Elegant SweetAlert2 success pop-up utilizing your theme styles
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      iconColor: "#caeb66",
-      title: "Application Submitted Successfully!",
-      text: "Our team will review your registration parameters shortly.",
-      showConfirmButton: false,
-      timer: 2000,
-      background: "#03373d",
-      color: "#ffffff",
-      customClass: {
-        popup: "rounded-2xl border border-[#b8b7b7]/10 shadow-2xl",
-        title: "font-bold text-lg tracking-tight",
-      },
-    });
+  // remove duplicate regions
+  const regions = [...new Set(regionDuplicate)];
 
+  // explore useMemo useCallback
+  const senderRegion = useWatch({ control, name: "senderRegion" });
+
+  const handleRiderApplication = (data) => {
     console.log("Submitted Rider Data via RHF:", data);
     reset(); // Clear form fields upon success
   };
@@ -53,7 +50,10 @@ const Rider = () => {
           <div className="divider opacity-40"></div>
 
           {/* Form Action Handler binding directly to react-hook-form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <form
+            onSubmit={handleSubmit(handleRiderApplication)}
+            className="space-y-5"
+          >
             <h3 className="text-lg font-bold text-[#03373d] tracking-tight">
               Tell us about yourself
             </h3>
@@ -147,8 +147,8 @@ const Rider = () => {
                   Your Region
                 </label>
                 <select
-                  className={`select select-bordered w-full bg-base-50/30 text-secondary text-sm font-medium focus:outline-hidden ${errors.region ? "border-error focus:border-error" : "focus:border-primary"}`}
-                  {...register("region", {
+                  className={`select select-bordered w-full bg-base-50/30 text-secondary text-sm font-medium focus:outline-hidden ${errors.senderRegion ? "border-error focus:border-error" : "focus:border-primary"}`}
+                  {...register("senderRegion", {
                     required: "Please select a region",
                   })}
                 >
