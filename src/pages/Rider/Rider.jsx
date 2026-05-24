@@ -18,6 +18,7 @@ const Rider = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const serviceCenters = useLoaderData();
+  console.log("Loaded Service Centers Data:", serviceCenters);
   const regionDuplicate = serviceCenters.map((center) => center.region);
 
   // remove duplicate regions
@@ -25,6 +26,15 @@ const Rider = () => {
 
   // explore useMemo useCallback
   const senderRegion = useWatch({ control, name: "senderRegion" });
+
+  // get districts based on selected region
+  const districtsByRegion = (region) => {
+    const regionDistricts = serviceCenters.filter(
+      (center) => center.region === region,
+    );
+    const district = regionDistricts.map((center) => center.district);
+    return district;
+  };
 
   const handleRiderApplication = (data) => {
     console.log("Submitted Rider Data via RHF:", data);
@@ -153,13 +163,15 @@ const Rider = () => {
                   })}
                 >
                   <option value="">Select your Region</option>
-                  <option value="dhaka">Dhaka</option>
-                  <option value="chittagong">Chittagong</option>
-                  <option value="rajshahi">Rajshahi</option>
+                  {regions.map((region, index) => (
+                    <option value={region} key={index}>
+                      {region}
+                    </option>
+                  ))}
                 </select>
-                {errors.region && (
+                {errors.senderRegion && (
                   <span className="text-error text-xs mt-1 font-medium">
-                    {errors.region.message}
+                    {errors.senderRegion.message}
                   </span>
                 )}
               </div>
@@ -176,9 +188,11 @@ const Rider = () => {
                   })}
                 >
                   <option value="">Select your District</option>
-                  <option value="savar">Savar</option>
-                  <option value="mirpur">Mirpur</option>
-                  <option value="dhanmondi">Dhanmondi</option>
+                  {districtsByRegion(senderRegion)?.map((district, index) => (
+                    <option value={district} key={index}>
+                      {district}
+                    </option>
+                  ))}
                 </select>
                 {errors.district && (
                   <span className="text-error text-xs mt-1 font-medium">
