@@ -34,7 +34,7 @@ const DashboardLayout = () => {
               <path d="M14 10l2 2l-2 2"></path>
             </svg>
           </label>
-          <Logo></Logo>
+          <Logo to="/"></Logo>
         </nav>
         {/* Page content here */}
         <Outlet></Outlet>
