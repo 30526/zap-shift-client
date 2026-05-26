@@ -104,7 +104,7 @@ const UsersManagement = () => {
               iconColor: "#caeb66",
             });
           })
-          .catch((error) => {
+          .catch(() => {
             Swal.fire({
               title: "Error!",
               text: "Failed to delete user.",
