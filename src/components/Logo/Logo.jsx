@@ -2,9 +2,9 @@ import React from "react";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router";
 
-const Logo = ({ color }) => {
+const Logo = ({ color, to }) => {
   return (
-    <Link to="/">
+    <Link to={to || ""}>
       <div className="flex">
         <img
           src={logo}

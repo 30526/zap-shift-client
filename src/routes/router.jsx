@@ -82,6 +82,10 @@ export const router = createBrowserRouter([
         Component: ApproveRider,
       },
       {
+        path: "users-management",
+        Component: ApproveRider,
+      },
+      {
         path: "payment/:parcelId",
         Component: Payment,
       },
