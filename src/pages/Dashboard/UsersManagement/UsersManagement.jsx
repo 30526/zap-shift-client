@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import {
@@ -12,7 +11,6 @@ import {
 import Swal from "sweetalert2";
 
 const UsersManagement = () => {
-  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
@@ -66,7 +64,7 @@ const UsersManagement = () => {
               iconColor: "#caeb66",
             });
           })
-          .catch((error) => {
+          .catch(() => {
             Swal.fire({
               title: "Error!",
               text: "Failed to update user role.",
