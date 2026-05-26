@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import useAuth from "./useAuth";
-import { useLocation } from "react-router";
+import { useNavigate } from "react-router";
 
 const axiosSecure = axios.create({
   baseURL: "http://localhost:3000",
@@ -9,12 +9,13 @@ const axiosSecure = axios.create({
 
 const useAxiosSecure = () => {
   const { user, logout } = useAuth();
-  const navigate = useLocation();
+  const navigate = useNavigate();
 
   // request interceptor
   useEffect(() => {
+    const token = user?.accessToken;
     const reqInterceptor = axiosSecure.interceptors.request.use((config) => {
-      config.headers.Authorization = `Bearer ${user?.accessToken}`;
+      config.headers.Authorization = `Bearer ${token}`;
       return config;
     });
 
@@ -24,11 +25,13 @@ const useAxiosSecure = () => {
         return response;
       },
       (error) => {
-        logout().then(() => {
-          navigate("/login");
-        });
-        console.log("errortaibur  message", error);
-        return Promise.reject(error);
+        if (error.response.status === 401 || error.response.status === 403) {
+          logout().then(() => {
+            navigate("/login");
+          });
+          console.log("errortaibur  message", error);
+          return Promise.reject(error);
+        }
       },
     );
 
