@@ -25,13 +25,11 @@ const useAxiosSecure = () => {
         return response;
       },
       (error) => {
-        if (error.response.status === 401 || error.response.status === 403) {
-          logout().then(() => {
-            navigate("/login");
-          });
-          console.log("errortaibur  message", error);
-          return Promise.reject(error);
-        }
+        logout().then(() => {
+          navigate("/login");
+        });
+        console.log("error message", error);
+        return Promise.reject(error);
       },
     );
 

@@ -122,7 +122,7 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">Payment History</span>
               </NavLink>
             </li>
-            {role.role === "admin" && (
+            {role === "admin" && (
               <>
                 <li
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"

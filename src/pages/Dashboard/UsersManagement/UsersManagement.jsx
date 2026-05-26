@@ -51,7 +51,7 @@ const UsersManagement = () => {
       if (result.isConfirmed) {
         // API call to update role
         axiosSecure
-          .patch(`/users/${userId}`, { role: newRole })
+          .patch(`/users/${userId}/role`, { role: newRole })
           .then(() => {
             refetch();
             Swal.fire({
