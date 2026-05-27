@@ -11,7 +11,7 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const handleLogin = (data) => {
-    console.log(data);
+    // console.log(data);
     signInUser(data.email, data.password)
       .then(() => {
         toast.success("Login successful!");

@@ -16,21 +16,21 @@ const UsersManagement = () => {
   const [roleFilter, setRoleFilter] = useState("all");
 
   const { data: users = [], refetch } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", searchTerm, roleFilter],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axiosSecure.get(`/users?search=${searchTerm}&role=${roleFilter}`);
       return res.data;
     },
   });
 
   // Filter users based on search and role
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = roleFilter === "all" || user.role === roleFilter;
-    return matchesSearch && matchesRole;
-  });
+  // const filteredUsers = users.filter((user) => {
+  //   const matchesSearch =
+  //     user.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     user.email?.toLowerCase().includes(searchTerm.toLowerCase());
+  //   const matchesRole = roleFilter === "all" || user.role === roleFilter;
+  //   return matchesSearch && matchesRole;
+  // });
 
   // Handle role change
   const handleRoleChange = (userId, currentRole) => {
@@ -169,7 +169,7 @@ const UsersManagement = () => {
           {/* Total Count */}
           <div className="bg-primary/10 px-4 py-2 rounded-lg">
             <span className="text-secondary font-semibold">
-              Total Users: {filteredUsers.length}
+              Total Users: {users.length}
             </span>
           </div>
         </div>
@@ -202,7 +202,7 @@ const UsersManagement = () => {
 
             {/* Table Body */}
             <tbody>
-              {filteredUsers.length === 0 ? (
+              {users.length === 0 ? (
                 <tr className="px-6 py-12">
                   <td colSpan="5" className="text-center py-12">
                     <div className="flex flex-col items-center justify-center text-gray-400">
@@ -212,7 +212,7 @@ const UsersManagement = () => {
                   </td>
                 </tr>
               ) : (
-                filteredUsers.map((userData) => (
+                users.map((userData) => (
                   <tr
                     key={userData._id}
                     className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
@@ -323,11 +323,11 @@ const UsersManagement = () => {
         </div>
 
         {/* Pagination (Optional - Add if needed) */}
-        {filteredUsers.length > 0 && (
+        {users.length > 0 && (
           <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-600">
-                Showing {filteredUsers.length} of {users.length} users
+                Showing {users.length} of {users.length} users
               </div>
               {/* Add pagination controls here if needed */}
             </div>
