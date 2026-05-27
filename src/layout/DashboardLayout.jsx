@@ -1,6 +1,12 @@
 import React from "react";
 import { Link, NavLink, Outlet } from "react-router";
-import { FaBoxOpen, FaCreditCard, FaMotorcycle, FaUsers } from "react-icons/fa";
+import {
+  FaBoxOpen,
+  FaCreditCard,
+  FaMotorcycle,
+  FaTruckLoading,
+  FaUsers,
+} from "react-icons/fa";
 import Logo from "../components/Logo/Logo";
 import useRole from "../hooks/useRole";
 
@@ -133,6 +139,15 @@ const DashboardLayout = () => {
                     <span className="is-drawer-close:hidden">
                       Approve Rider
                     </span>
+                  </NavLink>
+                </li>
+                <li
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Assign Rider"
+                >
+                  <NavLink to="/dashboard/assign-rider">
+                    <FaTruckLoading />
+                    <span className="is-drawer-close:hidden">Assign Rider</span>
                   </NavLink>
                 </li>
                 <li

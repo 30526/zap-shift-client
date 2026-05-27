@@ -122,8 +122,8 @@ const MyParcel = () => {
                           {parcel.parcelName || "Standard Package"}
                         </span>
                         <span className="text-xs text-accent font-normal flex items-center gap-1 mt-0.5">
-                          <FaCalendarAlt className="size-3" /> ID:{" "}
-                          {parcel._id?.slice(-8) || "N/A"}
+                          <FaCalendarAlt className="size-3 hidden md:block" />{" "}
+                          ID: {parcel.trackingId || "N/A"}
                         </span>
                       </div>
                     </td>
@@ -151,8 +151,10 @@ const MyParcel = () => {
                     </td>
 
                     {/* delivary status  */}
-                    <td className="py-4 font-semibold text-secondary">
-                      {parcel?.deliveryStatus || "pending"}
+                    <td className="py-4  font-semibold text-secondary">
+                      <span className="badge badge-soft badge-warning">
+                        {parcel?.deliveryStatus || "pending"}
+                      </span>
                     </td>
 
                     {/* Actions */}
