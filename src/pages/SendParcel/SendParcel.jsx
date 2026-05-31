@@ -23,6 +23,8 @@ const SendParcel = () => {
   const senderRegions = useWatch({ control, name: "senderRegion" });
   const receiverRegions = useWatch({ control, name: "receiverRegion" });
 
+  console.log("sender region", senderRegions);
+  console.log("receiver region", receiverRegions);
   // getting districs from regions
   const districtsByRegion = (region) => {
     const regionDistricts = serviceCenters.filter(
@@ -248,6 +250,7 @@ const SendParcel = () => {
                       key={index}
                       value={district}
                     >
+                      {console.log("sender district", district)}
                       {district}
                     </option>
                   ))}{" "}

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import {
   FaBoxOpen,
@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 
 const AssignRider = () => {
+  const [selectedParcel, setSelectedParcel] = useState(null);
   const axiosSecure = useAxiosSecure();
   const modalRef = useRef(null);
 
@@ -25,7 +26,19 @@ const AssignRider = () => {
     },
   });
 
-  const handleAssignRider = () => {
+  const { data: riders = [] } = useQuery({
+    queryKey: ["riders", selectedParcel?.senderDistrict, "available"],
+    enabled: !!selectedParcel,
+    queryFn: async () => {
+      const res = await axiosSecure.get(
+        `/riders?status=approved&district=${selectedParcel?.senderDistrict}&workStatus=available`,
+      );
+      return res.data;
+    },
+  });
+
+  const handleAssignRider = (parcel) => {
+    setSelectedParcel(parcel);
     if (modalRef.current) {
       modalRef.current.showModal();
     }
@@ -39,7 +52,7 @@ const AssignRider = () => {
       year: "numeric",
     });
   };
-
+  console.log("selected parcel", selectedParcel);
   return (
     <div className="w-full max-w-7xl mx-auto p-4 md:p-6 space-y-6 overflow-x-hidden">
       {/* Dynamic Header Section */}
@@ -116,7 +129,7 @@ const AssignRider = () => {
                             </span>
                             <span className="text-gray-300">•</span>
                             <span className="flex items-center gap-1 text-[11px]">
-                              <FaCalendarAlt className="size-2.5 opacity-70" />
+                              <FaCalendarAlt className="size-2.5 mb-1 opacity-70" />
                               {formatDate(parcel.createdAt)}
                             </span>
                           </div>
@@ -142,16 +155,16 @@ const AssignRider = () => {
                     {/* 3. Collection Hub Location (Where to pick up) */}
                     <td
                       className="py-0 lg:py-4 align-middle block lg:table-cell w-full lg:w-auto min-w-0"
-                      title={parcel.receiverAddress}
+                      title={parcel.senderAddress}
                     >
                       <div className="flex items-start gap-1.5 text-xs lg:text-sm text-dark/80 w-full min-w-0">
                         <FaMapMarkerAlt className="text-accent size-3.5 shrink-0 mt-0.5" />
                         <div className="min-w-0 flex-1">
                           <span className="block truncate font-bold text-secondary/90 max-w-[calc(100vw-60px)] lg:max-w-none">
-                            {parcel.receiverAddress || "No address provided"}
+                            {parcel.senderAddress || "No address provided"}
                           </span>
                           <span className="block text-[11px] text-accent font-semibold mt-0.5 truncate">
-                            {parcel.receiverDistrict}, {parcel.receiverRegion}
+                            {parcel.senderDistrict}, {parcel.senderRegion}
                           </span>
                         </div>
                       </div>
@@ -177,7 +190,7 @@ const AssignRider = () => {
                           Management:
                         </span>
                         <button
-                          onClick={() => handleAssignRider()}
+                          onClick={() => handleAssignRider(parcel)}
                           type="button"
                           className="btn btn-sm bg-primary text-secondary border border-primary/20 hover:bg-secondary hover:text-white font-bold rounded-xl text-xs gap-1.5 px-4 h-9 min-h-9 transition-all active:scale-98 shadow-xs"
                         >
@@ -193,16 +206,125 @@ const AssignRider = () => {
           </table>
         </div>
       </div>
-      <dialog ref={modalRef} id="my_modal_1" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">
-            Press ESC key or click the button below to close
-          </p>
-          <div className="modal-action">
+      {/* Rider Assignment Modal Component */}
+      <dialog
+        ref={modalRef}
+        id="my_modal_1"
+        className="modal modal-bottom sm:modal-middle backdrop-blur-xs transition-all"
+      >
+        <div className="modal-box bg-white border border-gray-200 shadow-2xl p-0 max-w-lg rounded-2xl overflow-hidden">
+          {/* Fixed Modal Header */}
+          <div className="bg-secondary p-5 text-white relative">
+            <h3 className="font-black text-lg tracking-tight flex items-center gap-2">
+              <FaBiking className="text-primary animate-pulse" /> Dispatch
+              Allocation Matrix
+            </h3>
+            <p className="text-xs text-base-content/80 font-medium mt-1">
+              Showing available regional operators for{" "}
+              <span className="text-primary font-bold">
+                {selectedParcel?.senderDistrict}
+              </span>{" "}
+              district.
+            </p>
+          </div>
+
+          {/* Core Content Body Area */}
+          <div className="p-5 space-y-4 max-h-[60vh] overflow-y-auto">
+            {/* Target Consignment Context Bar */}
+            {selectedParcel && (
+              <div className="bg-secondary/5 border border-secondary/10 rounded-xl p-3 flex flex-col sm:flex-row justify-between sm:items-center gap-2 text-xs font-mono text-secondary">
+                <div className="min-w-0">
+                  <span className="text-accent font-sans block text-[10px] uppercase font-bold tracking-wider">
+                    Target Item:
+                  </span>
+                  <span className="font-bold font-sans text-sm block truncate max-w-[240px]">
+                    {selectedParcel.parcelName}
+                  </span>
+                </div>
+                <div className="text-left sm:text-right shrink-0">
+                  <span className="text-accent font-sans block text-[10px] uppercase font-bold tracking-wider">
+                    Pickup Value:
+                  </span>
+                  <span className="font-bold text-secondary bg-primary/20 px-2 py-0.5 rounded border border-primary/30 inline-block mt-0.5">
+                    {selectedParcel.cost} BDT
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Subheading with Dynamic Results Count */}
+            <div className="flex justify-between items-center border-b border-gray-100 pb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-accent font-sans">
+                Available Field Partners
+              </span>
+              <span className="bg-secondary text-white font-mono font-bold text-xs px-2 py-0.5 rounded-md">
+                {riders.length} Found
+              </span>
+            </div>
+
+            {/* Riders List Mapping Viewport */}
+            <div className="space-y-2.5">
+              {riders.length === 0 ? (
+                <div className="text-center py-10 px-4 border-2 border-dashed border-gray-100 rounded-xl">
+                  <div className="w-10 h-10 bg-gray-50 text-accent/40 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <FaUser className="size-4" />
+                  </div>
+                  <p className="text-sm font-bold text-secondary">
+                    No active couriers available
+                  </p>
+                  <p className="text-xs text-accent mt-0.5 max-w-[280px] mx-auto">
+                    There are no riders currently marked as available in this
+                    district zone.
+                  </p>
+                </div>
+              ) : (
+                riders.map((rider, index) => (
+                  <div
+                    key={rider._id || index}
+                    className="flex items-center justify-between p-3.5 bg-white border border-gray-200 rounded-xl hover:border-secondary/30 transition-all shadow-2xs group"
+                  >
+                    {/* Left: Rider Profile Overview */}
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-10 h-10 bg-secondary/5 text-secondary border border-secondary/10 rounded-xl flex items-center justify-center shrink-0 font-bold text-sm">
+                        {rider.name ? (
+                          rider.name.charAt(0).toUpperCase()
+                        ) : (
+                          <FaUser className="size-3.5" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <span className="font-bold text-secondary text-sm block truncate max-w-[160px] sm:max-w-[220px]">
+                          {rider.name || "Unnamed Courier"}
+                        </span>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          {/* Live Availability Status Pill */}
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-secondary bg-primary px-2 py-0.5 rounded-md uppercase tracking-wider scale-95 origin-left">
+                            <span className="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse" />
+                            {rider.workStatus || "Available"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Allocation Interaction Button */}
+                    <button
+                      type="button"
+                      className="btn btn-sm bg-secondary text-white hover:bg-primary hover:text-secondary border-none font-bold rounded-xl text-xs px-4 h-9 min-h-9 transition-all active:scale-95 shadow-2xs shrink-0"
+                    >
+                      Confirm Link
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Modal Action Controls Footer Panel */}
+          <div className="bg-gray-50 px-5 py-4 border-t border-gray-100 flex justify-end">
             <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
+              <button className="btn btn-sm border border-gray-300 bg-white text-secondary hover:bg-gray-100 font-bold rounded-xl text-xs px-5 h-9 min-h-9 normal-case transition-all active:scale-98 shadow-2xs">
+                Dismiss Panel
+              </button>
             </form>
           </div>
         </div>
