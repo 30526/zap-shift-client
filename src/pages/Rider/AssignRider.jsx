@@ -44,6 +44,19 @@ const AssignRider = () => {
     }
   };
 
+  const handleAssignRider = (rider) => {
+    const riderAssignInfo = {
+      riderId: rider._id,
+      riderName: rider.name,
+      riderEmail: rider.email,
+      parcelId: selectedParcel._id,
+      parcelName: selectedParcel.parcelName,
+      senderDistrict: selectedParcel.senderDistrict,
+      cost: selectedParcel.cost,
+    };
+    axiosSecure.patch(``, riderAssignInfo);
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -52,7 +65,7 @@ const AssignRider = () => {
       year: "numeric",
     });
   };
-  console.log("selected parcel", selectedParcel);
+
   return (
     <div className="w-full max-w-7xl mx-auto p-4 md:p-6 space-y-6 overflow-x-hidden">
       {/* Dynamic Header Section */}
@@ -308,6 +321,7 @@ const AssignRider = () => {
 
                     {/* Right: Allocation Interaction Button */}
                     <button
+                      onclick={() => handleAssignRider(rider)}
                       type="button"
                       className="btn btn-sm bg-secondary text-white hover:bg-primary hover:text-secondary border-none font-bold rounded-xl text-xs px-4 h-9 min-h-9 transition-all active:scale-95 shadow-2xs shrink-0"
                     >
