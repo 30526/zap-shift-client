@@ -9,13 +9,14 @@ import {
   FaBiking,
   FaCalendarAlt,
 } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const AssignRider = () => {
   const [selectedParcel, setSelectedParcel] = useState(null);
   const axiosSecure = useAxiosSecure();
   const modalRef = useRef(null);
 
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [], refetch: parcelsRefetch } = useQuery({
     queryKey: ["parcels", "pending-pickup"],
     queryFn: async () => {
       const res = await axiosSecure.get(
@@ -44,17 +45,34 @@ const AssignRider = () => {
     }
   };
 
-  const handleAssignRider = (rider) => {
+  const handleAssignRiderToParcel = (rider) => {
     const riderAssignInfo = {
       riderId: rider._id,
       riderName: rider.name,
       riderEmail: rider.email,
-      parcelId: selectedParcel._id,
-      parcelName: selectedParcel.parcelName,
-      senderDistrict: selectedParcel.senderDistrict,
-      cost: selectedParcel.cost,
     };
-    axiosSecure.patch(``, riderAssignInfo);
+    axiosSecure
+      .patch(`/parcels/${selectedParcel._id}`, riderAssignInfo)
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          modalRef.current.close();
+          parcelsRefetch();
+          Swal.fire({
+            position: "center", // Moves the alert to the exact center of the screen
+            icon: "success",
+            iconColor: "#caeb66", // Brand primary lime
+            title: "Rider Has Been Assigned!",
+            showConfirmButton: false,
+            timer: 2500,
+            background: "#03373d", // Brand secondary deep dark green
+            color: "#ffffff", // High contrast text color
+            customClass: {
+              popup: "rounded-2xl border border-[#b8b7b7]/10 shadow-2xl", // Smooth corner matching
+              title: "font-bold text-lg tracking-tight",
+            },
+          });
+        }
+      });
   };
 
   const formatDate = (dateString) => {
@@ -321,11 +339,11 @@ const AssignRider = () => {
 
                     {/* Right: Allocation Interaction Button */}
                     <button
-                      onclick={() => handleAssignRider(rider)}
+                      onClick={() => handleAssignRiderToParcel(rider)}
                       type="button"
                       className="btn btn-sm bg-secondary text-white hover:bg-primary hover:text-secondary border-none font-bold rounded-xl text-xs px-4 h-9 min-h-9 transition-all active:scale-95 shadow-2xs shrink-0"
                     >
-                      Confirm Link
+                      Assign Rider
                     </button>
                   </div>
                 ))

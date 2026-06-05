@@ -128,6 +128,25 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">Payment History</span>
               </NavLink>
             </li>
+
+            {/* rider only routes  */}
+            {role === "rider" && (
+              <>
+                <li
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Assigned Deliveries"
+                >
+                  <NavLink to="/dashboard/assigned-deliveries">
+                    <FaMotorcycle />
+                    <span className="is-drawer-close:hidden">
+                      Assigned Deliveries
+                    </span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* admin only routes */}
             {role === "admin" && (
               <>
                 <li
