@@ -12,12 +12,13 @@ import {
   FaArrowRight,
   FaCalendarAlt,
 } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const AssignedDeliveries = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: parcels } = useQuery({
+  const { data: parcels = [], refetch } = useQuery({
     queryKey: ["parcels", user?.email, "driver_assigned"],
     queryFn: async () => {
       const res = await axiosSecure.get(
@@ -26,7 +27,78 @@ const AssignedDeliveries = () => {
       return res.data;
     },
   });
-  console.log(parcels);
+
+  // accept parcel
+  const handleAcceptDelivery = (parcel) => {
+    const statusInfo = { deliveryStatus: "rider_arriving" };
+    axiosSecure
+      .patch(`/parcels/${parcel._id}/status`, statusInfo)
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          refetch();
+          Swal.fire({
+            position: "center", // Moves the alert to the exact center of the screen
+            icon: "success",
+            iconColor: "#caeb66", // Brand primary lime
+            title: "Parcel Accepted!",
+            showConfirmButton: false,
+            timer: 2500,
+            background: "#03373d", // Brand secondary deep dark green
+            color: "#ffffff", // High contrast text color
+            customClass: {
+              popup: "rounded-2xl border border-[#b8b7b7]/10 shadow-2xl", // Smooth corner matching
+              title: "font-bold text-lg tracking-tight",
+            },
+          });
+        }
+      });
+  };
+
+  // reject parcel
+  const handleRejectedDelivery = (parcel) => {
+    const statusInfo = {
+      deliveryStatus: "pending-pickup",
+      riderEmail: parcel.riderEmail,
+    };
+    // alert
+    Swal.fire({
+      title: "Are you sure you want to reject this parcel?",
+      html: `<p class="text-sm text-accent/80">Rejecting this parcel will return it to the pending pickup queue. You can accept it later if you change your mind.</p>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#caeb66", // Primary (lime green)
+      cancelButtonColor: "#03373d", // Secondary (dark teal)
+      confirmButtonText:
+        '<span style="color: #0b0b0b; font-weight: 600;">Proceed</span>',
+      cancelButtonText: '<span style="font-weight: 600;">Cancel</span>',
+      iconColor: "#caeb66", // Warning icon color
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // change the parcel status
+        axiosSecure
+          .patch(`/parcels/${parcel._id}/status`, statusInfo)
+          .then((res) => {
+            if (res.data.modifiedCount > 0) {
+              refetch();
+              Swal.fire({
+                position: "center", // Moves the alert to the exact center of the screen
+                icon: "success",
+                iconColor: "#caeb66", // Brand primary lime
+                title: "Your parcel has been rejected!",
+                showConfirmButton: false,
+                timer: 2500,
+                background: "#03373d", // Brand secondary deep dark green
+                color: "#ffffff", // High contrast text color
+                customClass: {
+                  popup: "rounded-2xl border border-[#b8b7b7]/10 shadow-2xl", // Smooth corner matching
+                  title: "font-bold text-lg tracking-tight",
+                },
+              });
+            }
+          });
+      }
+    });
+  };
   return (
     <>
       <div className="w-full max-w-7xl mx-auto p-4 md:p-6 space-y-6 overflow-x-hidden">
@@ -183,22 +255,30 @@ const AssignedDeliveries = () => {
 
                           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
                             {/* Accept Package Trigger Button */}
-                            <button
-                              type="button"
-                              className="btn btn-sm bg-primary text-secondary border border-primary/20 hover:bg-secondary hover:text-white font-bold rounded-xl text-xs gap-1 px-3.5 h-9 min-h-9 transition-all active:scale-95 shadow-2xs flex-1 sm:flex-none"
-                            >
-                              <FaCheck className="size-2.5" />
-                              Accept Job
-                            </button>
+                            {parcel.deliveryStatus === "driver_assigned" ? (
+                              <>
+                                <button
+                                  onClick={() => handleAcceptDelivery(parcel)}
+                                  type="button"
+                                  className="btn btn-sm bg-primary text-secondary border border-primary/20 hover:bg-secondary hover:text-white font-bold rounded-xl text-xs gap-1 px-3.5 h-9 min-h-9 transition-all active:scale-95 shadow-2xs flex-1 sm:flex-none"
+                                >
+                                  <FaCheck className="size-2.5" />
+                                  Accept Job
+                                </button>
 
-                            {/* Reject Package Trigger Button */}
-                            <button
-                              type="button"
-                              className="btn btn-sm border border-red-200 bg-red-50 text-red-700 hover:bg-red-600 hover:text-white font-bold rounded-xl text-xs gap-1 px-3 h-9 min-h-9 transition-all active:scale-95 shadow-2xs flex-1 sm:flex-none"
-                            >
-                              <FaTimes className="size-2.5" />
-                              Reject
-                            </button>
+                                {/* Reject Package Trigger Button */}
+                                <button
+                                  onClick={() => handleRejectedDelivery(parcel)}
+                                  type="button"
+                                  className="btn btn-sm border border-red-200 bg-red-50 text-red-700 hover:bg-red-600 hover:text-white font-bold rounded-xl text-xs gap-1 px-3 h-9 min-h-9 transition-all active:scale-95 shadow-2xs flex-1 sm:flex-none"
+                                >
+                                  <FaTimes className="size-2.5" />
+                                  Reject
+                                </button>
+                              </>
+                            ) : (
+                              <span>Delivery Accepted</span>
+                            )}
                           </div>
                         </div>
                       </td>
