@@ -22,7 +22,7 @@ const AssignedDeliveries = () => {
     queryKey: ["parcels", user?.email, "driver_assigned"],
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/parcels/rider?email=${user?.email}&deliveryStatus=driver_assigned`,
+        `/parcels/rider?riderEmail=${user?.email}&deliveryStatus=driver_assigned`,
       );
       return res.data;
     },
