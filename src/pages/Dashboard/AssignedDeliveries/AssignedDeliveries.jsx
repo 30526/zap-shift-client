@@ -29,8 +29,8 @@ const AssignedDeliveries = () => {
   });
 
   // accept parcel
-  const handleAcceptDelivery = (parcel) => {
-    const statusInfo = { deliveryStatus: "rider_arriving" };
+  const handleDeliveryStatus = (parcel, status) => {
+    const statusInfo = { deliveryStatus: status };
     axiosSecure
       .patch(`/parcels/${parcel._id}/status`, statusInfo)
       .then((res) => {
@@ -253,12 +253,17 @@ const AssignedDeliveries = () => {
                             Job Actions:
                           </span>
 
-                          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                          <div className="grid gap-2 w-full sm:w-auto justify-end">
                             {/* Accept Package Trigger Button */}
                             {parcel.deliveryStatus === "driver_assigned" ? (
                               <>
                                 <button
-                                  onClick={() => handleAcceptDelivery(parcel)}
+                                  onClick={() =>
+                                    handleDeliveryStatus(
+                                      parcel,
+                                      "rider_arriving",
+                                    )
+                                  }
                                   type="button"
                                   className="btn btn-sm bg-primary text-secondary border border-primary/20 hover:bg-secondary hover:text-white font-bold rounded-xl text-xs gap-1 px-3.5 h-9 min-h-9 transition-all active:scale-95 shadow-2xs flex-1 sm:flex-none"
                                 >
@@ -277,7 +282,35 @@ const AssignedDeliveries = () => {
                                 </button>
                               </>
                             ) : (
-                              <span>Delivery Accepted</span>
+                              <>
+                                <span>Delivery Accepted</span>
+                                <button
+                                  onClick={() =>
+                                    handleDeliveryStatus(
+                                      parcel,
+                                      "marked_as_picked_up",
+                                    )
+                                  }
+                                  type="button"
+                                  className="btn btn-sm bg-primary text-secondary border border-primary/20 hover:bg-secondary hover:text-white font-bold rounded-xl text-xs gap-1 px-3.5 h-9 min-h-9 transition-all active:scale-95 shadow-2xs flex-1 sm:flex-none"
+                                >
+                                  <FaCheck className="size-2.5" />
+                                  Mark as Picked Up
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleDeliveryStatus(
+                                      parcel,
+                                      "marked_as_delivered",
+                                    )
+                                  }
+                                  type="button"
+                                  className="btn btn-sm bg-primary text-secondary border border-primary/20 hover:bg-secondary hover:text-white font-bold rounded-xl text-xs gap-1 px-3.5 h-9 min-h-9 transition-all active:scale-95 shadow-2xs flex-1 sm:flex-none"
+                                >
+                                  <FaCheck className="size-2.5" />
+                                  Mark as Delivered
+                                </button>
+                              </>
                             )}
                           </div>
                         </div>
