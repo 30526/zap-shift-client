@@ -7,6 +7,7 @@ import {
   FaTruckLoading,
   FaUsers,
 } from "react-icons/fa";
+import { SiGoogletasks } from "react-icons/si";
 import Logo from "../components/Logo/Logo";
 import useRole from "../hooks/useRole";
 
@@ -140,6 +141,17 @@ const DashboardLayout = () => {
                     <FaMotorcycle />
                     <span className="is-drawer-close:hidden">
                       Assigned Deliveries
+                    </span>
+                  </NavLink>
+                </li>
+                <li
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Completed Deliveries"
+                >
+                  <NavLink to="/dashboard/completed-deliveries">
+                    <SiGoogletasks />
+                    <span className="is-drawer-close:hidden">
+                      Completed Deliveries
                     </span>
                   </NavLink>
                 </li>
